@@ -56,6 +56,32 @@ describe("Quotes App", () => {
         .type("CRHarding")
         .should("have.value", "CRHarding");
     })
+
+    it("the submit button enables when both inputs are filled out", () => {
+      authorInput().type("Casey!");
+      textInput().type("Isn't testing FUN!?");
+      submitBtn().should("not.be.disabled");
+    })
+
+    it("the cancel button can reset the inputs and disable the submit button", () => {
+      authorInput().type("Casey!");
+      textInput().type("CSS is the BEST!");
+      cancelBtn().click();
+      textInput().should("have.value", "");
+      authorInput().should("have.value", "");
+      submitBtn().should("be.disabled");
+    })
+  })
+
+  describe("Adding a new quote", () => {
+    it("Can submit and delete a new quote", () => {
+      cy.contains(/CSS is the BEST!/i).should("not.exist");
+      textInput().type("CSS is the BEST!");
+      authorInput().type("CRHarding");
+      submitBtn().click();
+      cy.contains(/CSS is the BEST!/i).should("exist");
+      cy.contains(/CSS is the BEST!/i).next().next().click();
+    })
   })
 
 })
