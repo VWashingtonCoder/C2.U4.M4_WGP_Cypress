@@ -84,4 +84,20 @@ describe("Quotes App", () => {
     })
   })
 
+  describe("Editing an existing quote", () => {
+    it("can edit a quote", () => {
+      textInput().type("Who likes CSS anyways?");
+      authorInput().type("Casey");
+      submitBtn().click();
+      cy.contains("Who likes CSS anyways?").siblings("button:nth-of-type(1)").click();
+      textInput().should("have.value", "Who likes CSS anyways?");
+      authorInput().should("have.value", "Casey");
+      textInput().type(" I do!");
+      authorInput().type(" Harding");
+      submitBtn().click();
+      cy.contains("Who likes CSS anyways? I do! (Casey Harding)");
+      cy.contains("Who likes CSS anyways? I do! (Casey Harding)").next().next().click();
+      cy.contains("Who likes CSS anyways? I do! (Casey Harding").should("not.exist");
+    })
+  })
 })
